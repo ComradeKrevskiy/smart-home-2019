@@ -1,0 +1,12 @@
+package ru.sbt.mipt.oop;
+
+public class StringReader {
+
+    private static String ReadString(){
+        // считываем состояние дома из файла
+        Gson gson = new Gson();
+        CreatorOfNextSensorEvent CoNSE = new CreatorOfNextSensorEvent();
+        String json = new String(Files.readAllBytes(Paths.get("smart-home-1.js")));
+        return json;
+    }
+}
