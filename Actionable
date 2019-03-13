@@ -1,0 +1,3 @@
+interface Actionable {
+    public void execute(Action action) {} // выполнить действие (Action) над каждым элементом дома
+}
