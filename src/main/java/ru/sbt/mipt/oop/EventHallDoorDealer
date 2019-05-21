@@ -1,0 +1,33 @@
+package ru.sbt.mipt.oop;
+import static ru.sbt.mipt.oop.SensorEventType.*;
+
+public class EventHallDoorDealer implements EventDealer{
+
+    public void DealEvent(SensorEvent event, SmartHome smartHome, Room room, Object obj){
+        // если мы получили событие о закрытие двери в холле - это значит, что была закрыта входная дверь.
+        // в этом случае мы хотим автоматически выключить свет во всем доме (это же умный дом!)
+        if(!(obj instanceof Door))
+            return;
+        Door door = (Door)obj;
+        if(evType != DOOR_CLOSED || !room.getName().equals("hall"))
+            return;
+        SensorCommand command = new SensorCommand(CommandType.LIGHT_OFF, light.getId());
+        // событие от двери
+        CommandSender сommandSender = new CommandSender();
+        System.out.println("Got event: " + event);
+        if (door.getId().equals(event.getObjectId())) {
+            closeDoor(room, door, smartHome)
+        }
+
+    }
+
+    private void closeDoorNLight(Room room, Door door, SmartHome smartHome) {
+        door.setOpen(false);
+        System.out.println("Door " + door.getId() + " in room " + room.getName() + " was closed.");
+        LightIterator lightIt = new LightIterator(smartHome);
+        while(lightIt.hasNext()){
+            lightIt.next().setOn(false);
+            сommandSender.sendCommand(command);
+        }
+    }
+}

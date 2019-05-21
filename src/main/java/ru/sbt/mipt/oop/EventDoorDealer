@@ -1,0 +1,38 @@
+package ru.sbt.mipt.oop;
+import static ru.sbt.mipt.oop.SensorEventType.*;
+
+public class EventDoorDealer implements EventDealer{
+
+    public void DealEvent(SensorEvent event, SmartHome smartHome, Room room, Object obj){
+        if(!(obj instanceof Door))
+            return;
+        Door door = (Door)obj;
+        if(evType != DOOR_OPEN && evType != DOOR_CLOSED)
+            return;
+        // ñîáûòèå îò äâåðè
+        CommandSender ñommandSender = new CommandSender();
+        System.out.println("Got event: " + event);
+        if (door.getId().equals(event.getObjectId())) {
+            doorManager(room, door, event, smartHome)
+        }
+
+    }
+
+    private void doorManager(Room room, Door door, SensorEvent event, SmartHome smartHome) {
+        if (event.getType() == DOOR_OPEN) {
+            openDoor(room, door);
+        } else {
+            closeDoor(Room room, Door door, SmartHome smartHome);
+        }
+    }
+
+    private void openDoor(Room room, Door door) {
+        door.setOpen(true);
+        System.out.println("Door " + door.getId() + " in room " + room.getName() + " was opened.");
+    }
+
+    private void closeDoor(Room room, Door door, SmartHome smartHome) {
+        door.setOpen(false);
+        System.out.println("Door " + door.getId() + " in room " + room.getName() + " was closed.");
+    }
+}

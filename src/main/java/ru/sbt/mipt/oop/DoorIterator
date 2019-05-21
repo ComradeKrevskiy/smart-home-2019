@@ -1,0 +1,38 @@
+package src.ru.sbt.mipt.oop;
+
+import java.util.Collection;
+import java.util.Iterator;
+
+public class DoorIterator {
+    private Iterator<Room> roomIt;
+    private Iterator<Door> doorIt;
+
+
+    public boolean hasNext(){
+        return doorIt != null && doorIt.hasNext();
+    }
+
+    private void next_(){
+        if(roomIt.hasNext()) {
+            doorIt = roomIt.next().getLights().iterator();
+        }
+        else{
+            doorIt = null;
+        }
+    }
+
+
+    Door next(){
+        Door door = doorIt.next();
+        if(!doorIt.hasNext()){
+            next_();
+        }
+        return door;
+    }
+
+    public DoorIterator(SmartHome smartHome){
+        Collection<Room> rooms = smartHome.getRooms();
+        roomIt = rooms.iterator();
+        next_();
+    }
+}
